@@ -13,6 +13,7 @@ public class AddStudentPanel {
 
     private LabelledInputPanel idInput;
     private LabelledInputPanel nameInput;
+    private LabelledInputPanel classInput;
 
     private JButton addStudentButton;
     private JButton clearInputButton;
@@ -27,8 +28,10 @@ public class AddStudentPanel {
         inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
         this.idInput = new LabelledInputPanel("Student Id");
         this.nameInput = new LabelledInputPanel("Name");
+        this.classInput = new LabelledInputPanel("Class");
         inputPanel.add(this.idInput.getPanel());
         inputPanel.add(this.nameInput.getPanel());
+        inputPanel.add(this.classInput.getPanel());
 
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setMaximumSize(new Dimension(200, 200));
@@ -52,7 +55,8 @@ public class AddStudentPanel {
         addStudentButton.addActionListener((e) -> {
             String id = this.idInput.getText();
             String name = this.nameInput.getText();
-            studentManager.addStudent(id, name);
+            String className = this.classInput.getText();
+            studentManager.addStudent(id, name, className);
             JOptionPane.showMessageDialog(null, String.format("Student %s (%s) added!", id, name));
         });
     }

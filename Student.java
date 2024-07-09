@@ -3,15 +3,17 @@ import java.util.ArrayList;
 public class Student {
     private String name;
     private String id;
+    private String className;
 
     private double gradePointSum = 0;
     private double creditSum = 0;
 
     private ArrayList<ScoredModule> modules;
 
-    public Student(String name, String id) {
+    public Student(String name, String id, String className) {
         this.name = name;
         this.id = id;
+        this.className = className;
         this.modules = new ArrayList<>();
     }
 
@@ -36,6 +38,6 @@ public class Student {
     }
 
     public String toString() {
-        return String.format("%s (%s) - %.2f/4", this.name, this.id, this.getGpa());
+        return String.format("%s (%s) [%s] - %.2f/4", this.name, this.id, this.className, this.getGpa());
     }
 }

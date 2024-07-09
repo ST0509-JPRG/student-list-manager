@@ -27,7 +27,7 @@ public class StudentManager {
         ArrayList<Student> students = new ArrayList<>();
         for (int i = 1; i <= 15; i++) {
             String studentId = "P" + String.format("%03d", i);
-            students.add(new Student("Student" + i, studentId));
+            students.add(new Student("Student" + i, studentId, "DIT/FT/2B/02"));
         }
 
         // Randomly assign 5 modules with scores to each student
@@ -48,8 +48,8 @@ public class StudentManager {
         this.students = students;
     }
 
-    public void addStudent(String id, String name) {
-        Student newStudent = new Student(name, id);
+    public void addStudent(String id, String name, String className) {
+        Student newStudent = new Student(name, id, className);
         this.students.add(newStudent);
     }
 
