@@ -1,4 +1,6 @@
-public class ScoredModule {
+import java.io.Serializable;
+
+public class ScoredModule implements Serializable {
     private double score;
     private Module module;
 

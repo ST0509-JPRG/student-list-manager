@@ -1,4 +1,6 @@
-public class Module {
+import java.io.Serializable;
+
+public class Module implements Serializable {
     private String code;
     private String name;
     private int credit;

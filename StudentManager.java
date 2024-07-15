@@ -1,14 +1,21 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class StudentManager {
     private ArrayList<Student> students;
 
+    public static final String filepath = "students.out";
+
     public StudentManager() {
         this.students = new ArrayList<>();
 
-        this.mockData();
+        Student[] deserializedStudents = Serializer.deserialize(filepath);
+        if (deserializedStudents == null)
+            this.mockData();
+        else
+            this.students = new ArrayList<Student>(Arrays.asList(deserializedStudents));
     }
 
     private void mockData() {
