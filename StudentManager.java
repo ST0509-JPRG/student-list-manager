@@ -1,3 +1,9 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,11 +17,16 @@ public class StudentManager {
     public StudentManager() {
         this.students = new ArrayList<>();
 
-        Student[] deserializedStudents = Serializer.deserialize(filepath);
-        if (deserializedStudents == null)
-            this.mockData();
-        else
-            this.students = new ArrayList<Student>(Arrays.asList(deserializedStudents));
+        ArrayList<Student> apiStudent = getStudentsFromApi();
+        if (apiStudent != null) {
+            this.students = apiStudent;
+        } else {
+            Student[] deserializedStudents = Serializer.deserialize(filepath);
+            if (deserializedStudents == null)
+                this.mockData();
+            else
+                this.students = new ArrayList<Student>(Arrays.asList(deserializedStudents));
+        }
     }
 
     private void mockData() {
@@ -61,6 +72,42 @@ public class StudentManager {
     }
 
     public Student[] getStudents() {
+        refreshFromApi();
         return students.toArray(new Student[0]);
+    }
+
+    public void refreshFromApi() {
+        this.students = getStudentsFromApi();
+    }
+
+    private ArrayList<Student> getStudentsFromApi() {
+        ArrayList<Student> students = new ArrayList<>();
+        try {
+            URL url = new URL("http://localhost:3000");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+
+                while ((inputLine = in.readLine()) != null) {
+                    String[] studentDetails = inputLine.split(",");
+                    Student student = new Student(studentDetails[0], studentDetails[1], studentDetails[2]);
+                    students.add(student);
+                }
+            }
+
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return students;
     }
 }
